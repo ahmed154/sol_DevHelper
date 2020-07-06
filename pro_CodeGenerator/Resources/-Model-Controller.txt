@@ -13,11 +13,11 @@ namespace pro_API.Controllers
     [ApiController]
     public class -Model-Controller : ControllerBase
     {
-        private readonly I-Model-mentRepo -model-mentRepo;
+        private readonly I-Model-mentRepository -model-mentRepository;
 
-        public -Model-Controller(I-Model-mentRepo -model-mentRepo)
+        public -Model-Controller(I-Model-mentRepository -model-mentRepository)
         {
-            this.-model-mentRepo = -model-mentRepo;
+            this.-model-mentRepository = -model-mentRepository;
         }
 
         [HttpGet("{search}")]
@@ -25,7 +25,7 @@ namespace pro_API.Controllers
         {
             try
             {
-                var result = await -model-mentRepo.Search(name);
+                var result = await -model-mentRepository.Search(name);
 
                 if (result.Any())
                 {
@@ -45,7 +45,7 @@ namespace pro_API.Controllers
         {
             try
             {
-                return Ok(await -model-mentRepo.Get-Model-s());
+                return Ok(await -model-mentRepository.Get-Model-s());
             }
             catch (Exception)
             {
@@ -79,7 +79,7 @@ namespace pro_API.Controllers
                     return BadRequest();
 
                 // Add custom model validation error
-                -Model- dep = await -model-mentRepo.Get-Model-ByName(-model-.Name);
+                -Model- dep = await -model-mentRepository.Get-Model-ByName(-model-.Name);
 
                 if (dep != null)
                 {
@@ -87,7 +87,7 @@ namespace pro_API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var created-Model- = await -model-mentRepo.Add-Model-(-model-);
+                var created-Model- = await -model-mentRepository.Add-Model-(-model-);
 
                 return CreatedAtAction(nameof(Get-Model-),
                     new { id = created-Model-.Id }, created-Model-);
@@ -106,12 +106,12 @@ namespace pro_API.Controllers
                 if (id != -model-.Id)
                     return BadRequest("-Model- ID mismatch");
 
-                var -model-ToUpdate = await -model-mentRepo.Get-Model-(id);
+                var -model-ToUpdate = await -model-mentRepository.Get-Model-(id);
 
                 if (-model-ToUpdate == null)
                     return NotFound($"-Model- with Id = {id} not found");
 
-                return await -model-mentRepo.Update-Model-(-model-);
+                return await -model-mentRepository.Update-Model-(-model-);
             }
             catch (Exception)
             {
@@ -124,14 +124,14 @@ namespace pro_API.Controllers
         {
             try
             {
-                var -model-ToDelete = await -model-mentRepo.Get-Model-(id);
+                var -model-ToDelete = await -model-mentRepository.Get-Model-(id);
 
                 if (-model-ToDelete == null)
                 {
                     return NotFound($"-Model- with Id = {id} not found");
                 }
 
-                return await -model-mentRepo.Delete-Model-(id);
+                return await -model-mentRepository.Delete-Model-(id);
             }
             catch (Exception)
             {
