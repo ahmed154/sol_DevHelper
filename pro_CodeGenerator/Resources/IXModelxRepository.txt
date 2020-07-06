@@ -1,8 +1,8 @@
-using Models.Models;
+using pro_Models.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace pro_API.Repository
+namespace pro_API.Repositories
 {
     public interface I-Model-Repository
     {

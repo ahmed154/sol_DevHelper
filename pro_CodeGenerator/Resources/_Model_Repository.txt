@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using Models.Models;
+using pro_Models.Models;
 using pro_API.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace pro_API.Repository
+namespace pro_API.Repositories
 {
     public class -Model-Repository : I-Model-mentRepository
     {
