@@ -1,0 +1,143 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Models.Models;
+using pro_API.Repositories;
+
+namespace pro_API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class -Model-Controller : ControllerBase
+    {
+        private readonly I-Model-mentRepo -model-mentRepo;
+
+        public -Model-Controller(I-Model-mentRepo -model-mentRepo)
+        {
+            this.-model-mentRepo = -model-mentRepo;
+        }
+
+        [HttpGet("{search}")]
+        public async Task<ActionResult<IEnumerable<-Model->>> Search(string name)
+        {
+            try
+            {
+                var result = await -model-mentRepo.Search(name);
+
+                if (result.Any())
+                {
+                    return Ok(result);
+                }
+
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> Get-Model-s()
+        {
+            try
+            {
+                return Ok(await -model-mentRepo.Get-Model-s());
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
+        }
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<-Model->> Get-Model-(int id)
+        {
+            try
+            {
+                var result = await -model-mentRepo.Get-Model-(id);
+
+                if (result == null) return NotFound();
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
+        }
+        [HttpPost]
+        public async Task<ActionResult<-Model->> Create-Model-(-Model- -model-)
+        {
+            try
+            {
+                if (-model- == null)
+                    return BadRequest();
+
+                // Add custom model validation error
+                -Model- dep = await -model-mentRepo.Get-Model-ByName(-model-.Name);
+
+                if (dep != null)
+                {
+                    ModelState.AddModelError("name", "-Model- name already in use");
+                    return BadRequest(ModelState);
+                }
+
+                var created-Model- = await -model-mentRepo.Add-Model-(-model-);
+
+                return CreatedAtAction(nameof(Get-Model-),
+                    new { id = created-Model-.Id }, created-Model-);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error creating new -model- record");
+            }
+        }
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<-Model->> Update-Model-(int id, -Model- -model-)
+        {
+            try
+            {
+                if (id != -model-.Id)
+                    return BadRequest("-Model- ID mismatch");
+
+                var -model-ToUpdate = await -model-mentRepo.Get-Model-(id);
+
+                if (-model-ToUpdate == null)
+                    return NotFound($"-Model- with Id = {id} not found");
+
+                return await -model-mentRepo.Update-Model-(-model-);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error updating data");
+            }
+        }
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<-Model->> Delete-Model-(int id)
+        {
+            try
+            {
+                var -model-ToDelete = await -model-mentRepo.Get-Model-(id);
+
+                if (-model-ToDelete == null)
+                {
+                    return NotFound($"-Model- with Id = {id} not found");
+                }
+
+                return await -model-mentRepo.Delete-Model-(id);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error deleting data");
+            }
+        }
+    }
+}

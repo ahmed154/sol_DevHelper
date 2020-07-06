@@ -1,0 +1,85 @@
+using Microsoft.EntityFrameworkCore;
+using Models.Models;
+using pro_API.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace pro_API.Repository
+{
+    public class -Model-Repository : I-Model-mentRepository
+    {
+        private readonly AppDbContext appDbContext;
+
+        public -Model-mentRepo(AppDbContext appDbContext)
+        {
+            this.appDbContext = appDbContext;
+        }
+        async Task<IEnumerable<-Model->> I-Model-mentRepo.Search(string name)
+        {
+            IQueryable<-Model-> query = appDbContext.-Model-s;
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(e => e.Name.Contains(name));
+            }
+
+            return await query.ToListAsync();
+        }
+        public async Task<IEnumerable<-Model->> Get-Model-s()
+        {
+            return await appDbContext.-Model-s.ToListAsync();
+        }
+
+        public async Task<-Model-> Get-Model-(int -model-Id)
+        {
+            return await appDbContext.-Model-s
+                .FirstOrDefaultAsync(e => e.Id == -model-Id);
+        }
+
+        public async Task<-Model-> Add-Model-(-Model- -model-)
+        {
+            var result = await appDbContext.-Model-s.AddAsync(-model-);
+            await appDbContext.SaveChangesAsync();
+            return result.Entity;
+        }
+
+        public async Task<-Model-> Update-Model-(-Model- -model-)
+        {
+            var result = await appDbContext.-Model-s
+                .FirstOrDefaultAsync(e => e.Id == -model-.Id);
+
+            if (result != null)
+            {
+                result.Name = -model-.Name;
+
+                await appDbContext.SaveChangesAsync();
+
+                return result;
+            }
+
+            return null;
+        }
+
+        public async Task<-Model-> Delete-Model-(int -model-Id)
+        {
+            var result = await appDbContext.-Model-s
+                .FirstOrDefaultAsync(e => e.Id == -model-Id);
+            if (result != null)
+            {
+                appDbContext.-Model-s.Remove(result);
+                await appDbContext.SaveChangesAsync();
+                return result;
+            }
+
+            return null;
+        }
+
+        public async Task<-Model-> Get-Model-ByName(string name)
+        {
+            -Model- mod = await appDbContext.-Model-s.FirstOrDefaultAsync(e => e.Name == name);
+            return mod;
+        }
+    }
+}
