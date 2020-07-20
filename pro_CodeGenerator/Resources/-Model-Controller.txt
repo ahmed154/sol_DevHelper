@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using pro_Models.Models;
 using pro_API.Repositories;
+using pro_Models.Models;
+
 
 namespace pro_API.Controllers
 {
@@ -13,11 +14,11 @@ namespace pro_API.Controllers
     [ApiController]
     public class -Model-Controller : ControllerBase
     {
-        private readonly I-Model-mentRepository -model-mentRepository;
+        private readonly I-Model-Repository -model-Repository;
 
-        public -Model-Controller(I-Model-mentRepository -model-mentRepository)
+        public -Model-Controller(I-Model-Repository -model-Repository)
         {
-            this.-model-mentRepository = -model-mentRepository;
+            this.-model-Repository = -model-Repository;
         }
 
         [HttpGet("{search}")]
@@ -25,7 +26,7 @@ namespace pro_API.Controllers
         {
             try
             {
-                var result = await -model-mentRepository.Search(name);
+                var result = await -model-Repository.Search(name);
 
                 if (result.Any())
                 {
@@ -45,7 +46,7 @@ namespace pro_API.Controllers
         {
             try
             {
-                return Ok(await -model-mentRepository.Get-Model-s());
+                return Ok(await -model-Repository.Get-Model-s());
             }
             catch (Exception)
             {
@@ -58,7 +59,7 @@ namespace pro_API.Controllers
         {
             try
             {
-                var result = await -model-mentRepo.Get-Model-(id);
+                var result = await -model-Repository.Get-Model-(id);
 
                 if (result == null) return NotFound();
 
@@ -79,15 +80,14 @@ namespace pro_API.Controllers
                     return BadRequest();
 
                 // Add custom model validation error
-                -Model- dep = await -model-mentRepository.Get-Model-ByName(-model-.Name);
-
+                -Model- dep = await -model-Repository.Get-Model-Byname(-model-);
                 if (dep != null)
                 {
-                    ModelState.AddModelError("name", "-Model- name already in use");
+                    ModelState.AddModelError("Name", $"-Model- name: {-model-.Name} already in use");
                     return BadRequest(ModelState);
                 }
 
-                var created-Model- = await -model-mentRepository.Add-Model-(-model-);
+                var created-Model- = await -model-Repository.Add-Model-(-model-);
 
                 return CreatedAtAction(nameof(Get-Model-),
                     new { id = created-Model-.Id }, created-Model-);
@@ -106,12 +106,20 @@ namespace pro_API.Controllers
                 if (id != -model-.Id)
                     return BadRequest("-Model- ID mismatch");
 
-                var -model-ToUpdate = await -model-mentRepository.Get-Model-(id);
+                var -model-ToUpdate = await -model-Repository.Get-Model-(id);
 
                 if (-model-ToUpdate == null)
                     return NotFound($"-Model- with Id = {id} not found");
 
-                return await -model-mentRepository.Update-Model-(-model-);
+                // Add custom model validation error
+                //-Model- dep = await -model-Repository.Get-Model-Byname(-model-);
+                //if (dep != null)
+                //{
+                    //ModelState.AddModelError("Name", $"-Model- name: {-model-.Name} already in use");
+                    //return BadRequest(ModelState);
+                //}
+
+                return await -model-Repository.Update-Model-(-model-);
             }
             catch (Exception)
             {
@@ -124,14 +132,14 @@ namespace pro_API.Controllers
         {
             try
             {
-                var -model-ToDelete = await -model-mentRepository.Get-Model-(id);
+                var -model-ToDelete = await -model-Repository.Get-Model-(id);
 
                 if (-model-ToDelete == null)
                 {
                     return NotFound($"-Model- with Id = {id} not found");
                 }
 
-                return await -model-mentRepository.Delete-Model-(id);
+                return await -model-Repository.Delete-Model-(id);
             }
             catch (Exception)
             {
