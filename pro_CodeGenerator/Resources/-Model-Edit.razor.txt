@@ -1,0 +1,54 @@
+@page "/-model-/edit/{id:int}"
+
+<div class="container bg-white rounded border p-3">
+    <div class="pl-3">
+        <div class="row">
+            <span style="font-size:18px; color:#8f8f8f;"><a href="/-model-" style="color:#6372C4">-Model-ments</a>  /  @id</span>
+        </div>
+        <div class="row pt-4">
+            <button class="btn btn-primary" type="submit" @onclick=@(()=> Save()) style="background-color:#6372C4"><i class="far fa-save"></i> Save</button>
+            <a class="btn border ml-1" href="/-model-/@id"><i class="fas fa-undo"></i> Cancel</a>
+        </div>
+    </div>
+</div>
+
+<div class="container bg-white border box-shadow p-3 rounded">
+    <-Model-Form -Model-VM="-Model-VM" ecb_Save="Update" Type="Edit" @ref="Form"/>
+</div>
+
+    @code {
+
+        [Inject] public I-Model-Service -Model-Service { get; set; }
+        [Inject] public IJSRuntime JSRuntime { get; set; }
+        [Inject] NavigationManager NavigationManager { get; set; }
+        [Parameter] public int id { get; set; }
+
+        -Model-ViewModel -Model-VM { get; set; } = new -Model-ViewModel();
+        protected -Model-Form Form;
+
+        protected override async Task OnInitializedAsync()
+        {
+            -Model-VM = await -Model-Service.Get-Model-(id);
+        }
+
+        private async Task Save()
+        {
+            await Form.ParentSubmit();
+        }
+
+        private async Task Update()
+        {
+            -Model-VM.Exception = null;
+            -Model-ViewModel updated-Model-ViewModel = await -Model-Service.Update-Model-(-Model-VM.-Model-.Id, -Model-VM);
+
+            if (string.IsNullOrEmpty(updated-Model-ViewModel.Exception))
+            {
+                await JSRuntime.Notfication($"-Model-ment {-Model-VM.-Model-.Name} has been updated successfully!", IJSRuntimeExtensionMethods.SweetAlertMessageType.success, 3000);
+                NavigationManager.NavigateTo($"/-model-/{updated-Model-ViewModel.-Model-.Id}");
+            }
+            else
+            {
+                await JSRuntime.Notfication(updated-Model-ViewModel.Exception, IJSRuntimeExtensionMethods.SweetAlertMessageType.error, 10000);
+            }
+        }
+    }

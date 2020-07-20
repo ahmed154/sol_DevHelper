@@ -1,23 +1,27 @@
 using Microsoft.EntityFrameworkCore;
-using pro_Models.Models;
 using pro_API.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using pro_API.Repositories;
+using pro_Models.Models;
+using pro_Models.ViewModels;
 
 namespace pro_API.Repositories
 {
-    public class -Model-Repository : I-Model-mentRepository
+    public class -Model-Repository : I-Model-Repository
     {
         private readonly AppDbContext appDbContext;
 
-        public -Model-mentRepo(AppDbContext appDbContext)
+        public -Model-Repository(AppDbContext appDbContext)
         {
             this.appDbContext = appDbContext;
         }
-        async Task<IEnumerable<-Model->> I-Model-mentRepo.Search(string name)
+        async Task<IEnumerable<-Model-ViewModel>> I-Model-Repository.Search(string name)
         {
+            List<-Model-ViewModel> -model-ViewModels = new List<-Model-ViewModel>();
+
             IQueryable<-Model-> query = appDbContext.-Model-s;
 
             if (!string.IsNullOrEmpty(name))
@@ -25,44 +29,53 @@ namespace pro_API.Repositories
                 query = query.Where(e => e.Name.Contains(name));
             }
 
-            return await query.ToListAsync();
-        }
-        public async Task<IEnumerable<-Model->> Get-Model-s()
-        {
-            return await appDbContext.-Model-s.ToListAsync();
-        }
+            var -model-s = await query.ToListAsync();
 
-        public async Task<-Model-> Get-Model-(int -model-Id)
-        {
-            return await appDbContext.-Model-s
-                .FirstOrDefaultAsync(e => e.Id == -model-Id);
+            foreach (var -model- in -model-s)
+            {
+                -model-ViewModels.Add(new -Model-ViewModel { -Model- = -model- });
+            }
+            return -model-ViewModels;
         }
-
-        public async Task<-Model-> Add-Model-(-Model- -model-)
+        public async Task<IEnumerable<-Model-ViewModel>> Get-Model-s()
         {
-            var result = await appDbContext.-Model-s.AddAsync(-model-);
+            List<-Model-ViewModel> -model-ViewModels = new List<-Model-ViewModel>();
+            var -model-s = await appDbContext.-Model-s.ToListAsync();
+            foreach (var -model- in -model-s)
+            {
+                -model-ViewModels.Add(new -Model-ViewModel { -Model- = -model-});
+            }
+            return -model-ViewModels; 
+        }
+        public async Task<-Model-ViewModel> Get-Model-(int -model-Id)
+        {
+            -Model-ViewModel -model-ViewModel = new -Model-ViewModel();
+            -model-ViewModel.-Model- = await appDbContext.-Model-s.FirstOrDefaultAsync(e => e.Id == -model-Id);
+            return -model-ViewModel;
+        }
+        public async Task<-Model-ViewModel> Add-Model-(-Model-ViewModel -model-ViewModel)
+        {
+            var result = await appDbContext.-Model-s.AddAsync(-model-ViewModel.-Model-);
             await appDbContext.SaveChangesAsync();
-            return result.Entity;
-        }
 
-        public async Task<-Model-> Update-Model-(-Model- -model-)
+            -model-ViewModel.-Model- = result.Entity;
+            return -model-ViewModel;
+        }
+        public async Task<-Model-ViewModel> Update-Model-(-Model-ViewModel -model-ViewModel)
         {
             var result = await appDbContext.-Model-s
-                .FirstOrDefaultAsync(e => e.Id == -model-.Id);
+                .FirstOrDefaultAsync(e => e.Id == -model-ViewModel.-Model-.Id);
 
             if (result != null)
             {
-                result.Name = -model-.Name;
-
+                result.Name = -model-ViewModel.-Model-.Name;
                 await appDbContext.SaveChangesAsync();
-
-                return result;
+                return new -Model-ViewModel { -Model- = result };
             }
 
             return null;
         }
-
-        public async Task<-Model-> Delete-Model-(int -model-Id)
+        public async Task<-Model-ViewModel> Delete-Model-(int -model-Id)
         {
             var result = await appDbContext.-Model-s
                 .FirstOrDefaultAsync(e => e.Id == -model-Id);
@@ -70,16 +83,18 @@ namespace pro_API.Repositories
             {
                 appDbContext.-Model-s.Remove(result);
                 await appDbContext.SaveChangesAsync();
-                return result;
+                return new -Model-ViewModel { -Model- = result };
             }
 
             return null;
         }
-
-        public async Task<-Model-> Get-Model-ByName(string name)
+/// <summary>
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// </summary>
+        public async Task<-Model-> Get-Model-Byname(-Model- -model-)
         {
-            -Model- mod = await appDbContext.-Model-s.FirstOrDefaultAsync(e => e.Name == name);
-            return mod;
+            return await appDbContext.-Model-s.Where(n => n.Name == -model-.Name && n.Id != -model-.Id)
+                .FirstOrDefaultAsync();
         }
     }
 }

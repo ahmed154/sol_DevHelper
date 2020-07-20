@@ -1,0 +1,54 @@
+@page "/-model-/{id:int}"
+
+    <div class="container bg-white rounded border p-3">
+        <div class="pl-3">
+            <div class="row">
+                <span style="font-size:18px; color:#8f8f8f;"><a href="/-model-" style="color:#6372C4">-Model-ments</a> /  @id</span>
+            </div>
+            <div class="row pt-4">
+                <a class="btn btn-primary" href="/-model-/edit/@id" style="background-color:#6372C4"><i class="far fa-edit"></i> Edit</a>
+                <a class="btn border ml-1" href="/-model-/new"><i class="far fa-file"></i> New</a>
+                <button class="btn border ml-5" @onclick="DeleteConfirm"><i class="far fa-trash-alt"></i> Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container bg-white border box-shadow p-3 rounded">
+        <-Model-Form -Model-VM="-Model-VM" Type="Details" />
+    </div>
+
+
+    @code {
+
+        [Parameter] public int id { get; set; }
+        [Inject] public I-Model-Service -Model-Service { get; set; }
+        [Inject] public IJSRuntime JSRuntime { get; set; }
+        [Inject] NavigationManager NavigationManager { get; set; }
+
+        -Model-ViewModel -Model-VM { get; set; } = new -Model-ViewModel();
+
+        protected override async Task OnInitializedAsync()
+        {
+            -Model-VM = await -Model-Service.Get-Model-(id);
+        }
+
+        protected async Task DeleteConfirm()
+        {
+            bool result = await JSRuntime.Confirm("Confirmation", $"Are you sure you want to delete -Model-ment {-Model-VM.-Model-.Name} ?", IJSRuntimeExtensionMethods.SweetAlertMessageType.question);
+            if (result) await Delete();  
+        }
+        protected async Task Delete()
+        {
+            -Model-ViewModel created-Model-ViewModel = await -Model-Service.Delete-Model-(-Model-VM.-Model-.Id);
+
+            if (string.IsNullOrEmpty(created-Model-ViewModel.Exception))
+            {
+                await JSRuntime.Notfication($"-Model-ment {-Model-VM.-Model-.Name} has been deleted successfully!", IJSRuntimeExtensionMethods.SweetAlertMessageType.success, 3000);
+                NavigationManager.NavigateTo($"/-model-");
+            }
+            else
+            {
+                await JSRuntime.Notfication(created-Model-ViewModel.Exception, IJSRuntimeExtensionMethods.SweetAlertMessageType.error, 10000);
+            }
+        }
+    }

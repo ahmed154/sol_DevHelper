@@ -1,4 +1,5 @@
 using pro_Models.Models;
+using pro_Models.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,14 +7,15 @@ namespace pro_API.Repositories
 {
     public interface I-Model-Repository
     {
-        Task<IEnumerable<-Model->> Search(string name);
-        Task<IEnumerable<-Model->> Get-Model-s();
-        Task<-Model-> Get-Model-(int -model-Id);
-        Task<-Model-> Add-Model-(-Model- -model-);
-        Task<-Model-> Update-Model-(-Model- -model-);
-        Task<-Model-> Delete-Model-(int -model-Id);
+        Task<IEnumerable<-Model-ViewModel>> Search(string name);
+        Task<IEnumerable<-Model-ViewModel>> Get-Model-s();
+        Task<-Model-ViewModel> Get-Model-(int -model-Id);
+        Task<-Model-ViewModel> Add-Model-(-Model-ViewModel -model-ViewModel);
+        Task<-Model-ViewModel> Update-Model-(-Model-ViewModel -model-);
+        Task<-Model-ViewModel> Delete-Model-(int -model-Id);
         
         /////////////////////////////////////////////////////////// Other interface methods
-        Task<-Model-> Get-Model-ByName(string name);
+        //Task<-Model-> Get-Model-ByName(string name);
+        Task<-Model-> Get-Model-Byname(-Model- -model-);
     }
 }
