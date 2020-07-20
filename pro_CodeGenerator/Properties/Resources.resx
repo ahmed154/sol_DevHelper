@@ -118,11 +118,32 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="-Model-.razor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\-Model-.razor.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1256</value>
+  </data>
   <data name="-Model-Controller" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\-Model-Controller.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1256</value>
   </data>
+  <data name="-Model-Details.razor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\-Model-Details.razor.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1256</value>
+  </data>
+  <data name="-Model-Edit.razor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\-Model-Edit.razor.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1256</value>
+  </data>
+  <data name="-Model-Form.razor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\-Model-Form.razor.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1256</value>
+  </data>
+  <data name="-Model-New.razor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\-Model-New.razor.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1256</value>
+  </data>
+  <data name="-Model-Service" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\-Model-Service.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1256</value>
+  </data>
   <data name="I-Model-Repository" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IXModelxRepository.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1256</value>
+  </data>
+  <data name="I-Model-Service" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\I-Model-Service.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1256</value>
   </data>
   <data name="_Model_Repository" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\_Model_Repository.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1256</value>

@@ -1,0 +1,51 @@
+@page "/-model-/new"
+
+<div class="container bg-white rounded border p-3">
+    <div class="pl-3">
+        <div class="row">
+            <span style="font-size:18px; color:#8f8f8f;"><a href="/-model-" style="color:#6372C4">-Model-ments</a> /  New</span>
+        </div>
+        <div class="row pt-4">
+            <button class="btn btn-primary" type="submit" @onclick=@(()=> Save()) style="background-color:#6372C4"><i class="far fa-save"></i> Save</button>
+            <a class="btn border ml-1" href="/-model-"><i class="fas fa-undo"></i> Cancel</a>
+        </div>
+    </div>
+</div>
+
+<div class="container bg-white border box-shadow p-3 rounded">
+    <-Model-Form -Model-VM="-Model-VM" ecb_Save="Create" Type="New" @ref="Form" />
+</div>
+
+
+@code
+{
+    [Inject] public I-Model-Service -Model-Service { get; set; }
+    [Inject] public IJSRuntime JSRuntime { get; set; }
+    [Inject] NavigationManager NavigationManager { get; set; }
+
+    protected -Model-Form Form;
+    -Model-ViewModel -Model-VM { get; set; } = new -Model-ViewModel();
+
+    private async Task Save()
+    {
+        await Form.ParentSubmit();
+    }
+    private async Task Create()
+    {
+        -Model-VM.Exception = null;
+        -Model-ViewModel created-Model-ViewModel = await -Model-Service.Create-Model-(-Model-VM);
+
+        if (string.IsNullOrEmpty(created-Model-ViewModel.Exception))
+        {
+            await JSRuntime.Notfication($"-Model-ment {-Model-VM.-Model-.Name} has been created successfully!", IJSRuntimeExtensionMethods.SweetAlertMessageType.success, 3000);
+            NavigationManager.NavigateTo($"/-model-/{created-Model-ViewModel.-Model-.Id}");
+        }
+        else
+        {
+            await JSRuntime.Notfication(created-Model-ViewModel.Exception, IJSRuntimeExtensionMethods.SweetAlertMessageType.error, 10000);
+        }
+    }
+}
+
+
+f

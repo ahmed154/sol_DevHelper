@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using pro_Models.Models;
 using pro_API.Repositories;
+using pro_Models.Models;
+using pro_Models.ViewModels;
 
 namespace pro_API.Controllers
 {
@@ -13,19 +14,19 @@ namespace pro_API.Controllers
     [ApiController]
     public class -Model-Controller : ControllerBase
     {
-        private readonly I-Model-mentRepo -model-mentRepo;
+        private readonly I-Model-Repository -model-Repository;
 
-        public -Model-Controller(I-Model-mentRepo -model-mentRepo)
+        public -Model-Controller(I-Model-Repository -model-Repository)
         {
-            this.-model-mentRepo = -model-mentRepo;
+            this.-model-Repository = -model-Repository;
         }
 
         [HttpGet("{search}")]
-        public async Task<ActionResult<IEnumerable<-Model->>> Search(string name)
+        public async Task<ActionResult<IEnumerable<-Model-ViewModel>>> Search(string name)
         {
             try
             {
-                var result = await -model-mentRepo.Search(name);
+                var result = await -model-Repository.Search(name);
 
                 if (result.Any())
                 {
@@ -45,7 +46,7 @@ namespace pro_API.Controllers
         {
             try
             {
-                return Ok(await -model-mentRepo.Get-Model-s());
+                return Ok(await -model-Repository.Get-Model-s());
             }
             catch (Exception)
             {
@@ -54,11 +55,11 @@ namespace pro_API.Controllers
             }
         }
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<-Model->> Get-Model-(int id)
+        public async Task<ActionResult<-Model-ViewModel>> Get-Model-(int id)
         {
             try
             {
-                var result = await -model-mentRepo.Get-Model-(id);
+                var result = await -model-Repository.Get-Model-(id);
 
                 if (result == null) return NotFound();
 
@@ -71,26 +72,24 @@ namespace pro_API.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult<-Model->> Create-Model-(-Model- -model-)
+        public async Task<ActionResult<-Model-ViewModel>> Create-Model-(-Model-ViewModel -model-ViewModel)
         {
             try
             {
-                if (-model- == null)
-                    return BadRequest();
+                if (-model-ViewModel == null)return BadRequest();
 
                 // Add custom model validation error
-                -Model- dep = await -model-mentRepo.Get-Model-ByName(-model-.Name);
-
+                -Model- dep = await -model-Repository.Get-Model-Byname(-model-ViewModel.-Model-);
                 if (dep != null)
                 {
-                    ModelState.AddModelError("name", "-Model- name already in use");
+                    ModelState.AddModelError("Name", $"-Model- name: {-model-ViewModel.-Model-.Name} already in use");
                     return BadRequest(ModelState);
                 }
 
-                var created-Model- = await -model-mentRepo.Add-Model-(-model-);
+                -model-ViewModel = await -model-Repository.Add-Model-(-model-ViewModel);
 
                 return CreatedAtAction(nameof(Get-Model-),
-                    new { id = created-Model-.Id }, created-Model-);
+                    new { id = -model-ViewModel.-Model-.Id }, -model-ViewModel);
             }
             catch (Exception)
             {
@@ -99,19 +98,27 @@ namespace pro_API.Controllers
             }
         }
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<-Model->> Update-Model-(int id, -Model- -model-)
+        public async Task<ActionResult<-Model-ViewModel>> Update-Model-(int id, -Model-ViewModel -model-ViewModel)
         {
             try
             {
-                if (id != -model-.Id)
+                if (id != -model-ViewModel.-Model-.Id)
                     return BadRequest("-Model- ID mismatch");
 
-                var -model-ToUpdate = await -model-mentRepo.Get-Model-(id);
+                var -model-ToUpdate = await -model-Repository.Get-Model-(id);
 
                 if (-model-ToUpdate == null)
                     return NotFound($"-Model- with Id = {id} not found");
 
-                return await -model-mentRepo.Update-Model-(-model-);
+                // Add custom model validation error
+                -Model- dep = await -model-Repository.Get-Model-Byname(-model-ViewModel.-Model-);
+                if (dep != null)
+                {
+                    ModelState.AddModelError("Name", $"-Model- name: {-model-ViewModel.-Model-.Name} already in use");
+                    return BadRequest(ModelState);
+                }
+
+                return await -model-Repository.Update-Model-(-model-ViewModel);
             }
             catch (Exception)
             {
@@ -120,18 +127,18 @@ namespace pro_API.Controllers
             }
         }
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<-Model->> Delete-Model-(int id)
+        public async Task<ActionResult<-Model-ViewModel>> Delete-Model-(int id)
         {
             try
             {
-                var -model-ToDelete = await -model-mentRepo.Get-Model-(id);
+                var -model-ToDelete = await -model-Repository.Get-Model-(id);
 
                 if (-model-ToDelete == null)
                 {
                     return NotFound($"-Model- with Id = {id} not found");
                 }
 
-                return await -model-mentRepo.Delete-Model-(id);
+                return await -model-Repository.Delete-Model-(id);
             }
             catch (Exception)
             {

@@ -61,14 +61,39 @@ namespace pro_CodeGenerator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to @page &quot;/-model-&quot;
+        ///
+        ///&lt;div class=&quot;container bg-white rounded border p-3&quot;&gt;
+        ///    &lt;div class=&quot;pl-3&quot;&gt;
+        ///        &lt;div class=&quot;row&quot;&gt;
+        ///            &lt;span style=&quot;font-size:18px; color:#8f8f8f;&quot;&gt;-Model-ments&lt;/span&gt;
+        ///        &lt;/div&gt;
+        ///        &lt;div class=&quot;row pt-4&quot;&gt;
+        ///            &lt;a class=&quot;btn btn-primary&quot; href=&quot;/-model-/new&quot; style=&quot;background-color:#6372C4&quot;&gt;&lt;i class=&quot;far fa-file&quot;&gt;&lt;/i&gt; New&lt;/a&gt;
+        ///        &lt;/div&gt;
+        ///    &lt;/div&gt;
+        ///&lt;/div&gt;
+        ///
+        ///&lt;div class=&quot;container bg-white border box-shadow p-3 rounded&quot;&gt;
+        ///    @if (-Model-VMs == null)
+        ///  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string _Model__razor {
+            get {
+                return ResourceManager.GetString("-Model-.razor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to using System;
         ///using System.Collections.Generic;
         ///using System.Linq;
         ///using System.Threading.Tasks;
         ///using Microsoft.AspNetCore.Http;
         ///using Microsoft.AspNetCore.Mvc;
-        ///using Models.Models;
         ///using pro_API.Repositories;
+        ///using pro_Models.Models;
+        ///using pro_Models.ViewModels;
         ///
         ///namespace pro_API.Controllers
         ///{
@@ -76,11 +101,9 @@ namespace pro_CodeGenerator.Properties {
         ///    [ApiController]
         ///    public class -Model-Controller : ControllerBase
         ///    {
-        ///        private readonly I-Model-mentRepo -model-mentRepo;
+        ///        private readonly I-Model-Repository -model-Repository;
         ///
-        ///        public -Model-Controller(I-Model-mentRepo -model-mentRepo)
-        ///        {
-        ///   [rest of string was truncated]&quot;;.
+        ///        public -Model-Controller(I-Model-Re [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string _Model_Controller {
             get {
@@ -89,25 +112,98 @@ namespace pro_CodeGenerator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to @page &quot;/-model-/{id:int}&quot;
+        ///
+        ///    &lt;div class=&quot;container bg-white rounded border p-3&quot;&gt;
+        ///        &lt;div class=&quot;pl-3&quot;&gt;
+        ///            &lt;div class=&quot;row&quot;&gt;
+        ///                &lt;span style=&quot;font-size:18px; color:#8f8f8f;&quot;&gt;&lt;a href=&quot;/-model-&quot; style=&quot;color:#6372C4&quot;&gt;-Model-ments&lt;/a&gt; /  @id&lt;/span&gt;
+        ///            &lt;/div&gt;
+        ///            &lt;div class=&quot;row pt-4&quot;&gt;
+        ///                &lt;a class=&quot;btn btn-primary&quot; href=&quot;/-model-/edit/@id&quot; style=&quot;background-color:#6372C4&quot;&gt;&lt;i class=&quot;far fa-edit&quot;&gt;&lt;/i&gt; Edit&lt;/a&gt;
+        ///                &lt;a class=&quot;btn border m [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string _Model_Details_razor {
+            get {
+                return ResourceManager.GetString("-Model-Details.razor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to @page &quot;/-model-/edit/{id:int}&quot;
+        ///
+        ///&lt;div class=&quot;container bg-white rounded border p-3&quot;&gt;
+        ///    &lt;div class=&quot;pl-3&quot;&gt;
+        ///        &lt;div class=&quot;row&quot;&gt;
+        ///            &lt;span style=&quot;font-size:18px; color:#8f8f8f;&quot;&gt;&lt;a href=&quot;/-model-&quot; style=&quot;color:#6372C4&quot;&gt;-Model-ments&lt;/a&gt;  /  @id&lt;/span&gt;
+        ///        &lt;/div&gt;
+        ///        &lt;div class=&quot;row pt-4&quot;&gt;
+        ///            &lt;button class=&quot;btn btn-primary&quot; type=&quot;submit&quot; @onclick=@(()=&gt; Save()) style=&quot;background-color:#6372C4&quot;&gt;&lt;i class=&quot;far fa-save&quot;&gt;&lt;/i&gt; Save&lt;/button&gt;
+        ///            &lt;a class=&quot;btn border ml-1 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string _Model_Edit_razor {
+            get {
+                return ResourceManager.GetString("-Model-Edit.razor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to @using Syncfusion.Blazor.Inputs
+        ///
+        ///    &lt;EditForm Model=&quot;-Model-VM&quot; Context=&quot;formContext&quot;&gt;
+        ///        &lt;ObjectGraphDataAnnotationsValidator /&gt;
+        ///
+        ///        &lt;div class=&quot;container border p-3&quot;&gt;
+        ///
+        ///            &lt;div class=&quot;row&quot;&gt;
+        ///                &lt;div class=&quot;col-xs-6 col-sm-6 col-lg-6 col-md-6&quot;&gt;
+        ///                    &lt;SfTextBox id=&quot;name&quot; Placeholder=&quot;Name&quot; disabled=&quot;@IsDisabled&quot; FloatLabelType=&quot;@FloatLabelType.Auto&quot; @bind-Value=&quot;@-Model-VM.-Model-.Name&quot;&gt;&lt;/SfTextBox&gt;
+        ///                    &lt;ValidationMessage For=&quot;@(() =&gt; - [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string _Model_Form_razor {
+            get {
+                return ResourceManager.GetString("-Model-Form.razor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to @page &quot;/-model-/new&quot;
+        ///
+        ///&lt;div class=&quot;container bg-white rounded border p-3&quot;&gt;
+        ///    &lt;div class=&quot;pl-3&quot;&gt;
+        ///        &lt;div class=&quot;row&quot;&gt;
+        ///            &lt;span style=&quot;font-size:18px; color:#8f8f8f;&quot;&gt;&lt;a href=&quot;/-model-&quot; style=&quot;color:#6372C4&quot;&gt;-Model-ments&lt;/a&gt; /  New&lt;/span&gt;
+        ///        &lt;/div&gt;
+        ///        &lt;div class=&quot;row pt-4&quot;&gt;
+        ///            &lt;button class=&quot;btn btn-primary&quot; type=&quot;submit&quot; @onclick=@(()=&gt; Save()) style=&quot;background-color:#6372C4&quot;&gt;&lt;i class=&quot;far fa-save&quot;&gt;&lt;/i&gt; Save&lt;/button&gt;
+        ///            &lt;a class=&quot;btn border ml-1&quot; href=&quot;/-m [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string _Model_New_razor {
+            get {
+                return ResourceManager.GetString("-Model-New.razor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to using Microsoft.EntityFrameworkCore;
-        ///using Models.Models;
         ///using pro_API.Data;
         ///using System;
         ///using System.Collections.Generic;
         ///using System.Linq;
         ///using System.Threading.Tasks;
+        ///using pro_API.Repositories;
+        ///using pro_Models.Models;
+        ///using pro_Models.ViewModels;
         ///
-        ///namespace pro_API.Repository
+        ///namespace pro_API.Repositories
         ///{
-        ///    public class -Model-Repository : I-Model-mentRepository
+        ///    public class -Model-Repository : I-Model-Repository
         ///    {
         ///        private readonly AppDbContext appDbContext;
         ///
-        ///        public -Model-mentRepo(AppDbContext appDbContext)
+        ///        public -Model-Repository(AppDbContext appDbContext)
         ///        {
-        ///            this.appDbContext = appDbContext;
-        ///        }
-        ///        async Task&lt;IEnumerable&lt;-Model-&gt;&gt; I-M [rest of string was truncated]&quot;;.
+        ///            this.appDbContext = appDbCo [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string _Model_Repository {
             get {
@@ -116,26 +212,75 @@ namespace pro_CodeGenerator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to using Models.Models;
+        ///   Looks up a localized string similar to using Microsoft.AspNetCore.Components;
+        ///using Newtonsoft.Json;
+        ///using pro_Models.Models;
+        ///using pro_Models.ViewModels;
+        ///using pro_Server.Helpers;
+        ///using System;
+        ///using System.Collections.Generic;
+        ///using System.Linq;
+        ///using System.Net.Http;
+        ///using System.Text;
+        ///using System.Text.Json;
+        ///using System.Threading.Tasks;
+        ///
+        ///namespace pro_Server.Services
+        ///{
+        ///    public class -Model-Service : I-Model-Service
+        ///    {
+        ///        private readonly HttpClient httpClient;
+        ///        private readonly IHttpService httpService;
+        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string _Model_Service {
+            get {
+                return ResourceManager.GetString("-Model-Service", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to using pro_Models.Models;
+        ///using pro_Models.ViewModels;
         ///using System.Collections.Generic;
         ///using System.Threading.Tasks;
         ///
-        ///namespace pro_API.Repository
+        ///namespace pro_API.Repositories
         ///{
         ///    public interface I-Model-Repository
         ///    {
-        ///        Task&lt;IEnumerable&lt;-Model-&gt;&gt; Search(string name);
-        ///        Task&lt;IEnumerable&lt;-Model-&gt;&gt; Get-Model-s();
-        ///        Task&lt;-Model-&gt; Get-Model-(int -model-Id);
-        ///        Task&lt;-Model-&gt; Add-Model-(-Model- -model-);
-        ///        Task&lt;-Model-&gt; Update-Model-(-Model- -model-);
-        ///        Task&lt;-Model-&gt; Delete-Model-(int -model-Id);
-        ///        
-        ///        ///// [rest of string was truncated]&quot;;.
+        ///        Task&lt;IEnumerable&lt;-Model-ViewModel&gt;&gt; Search(string name);
+        ///        Task&lt;IEnumerable&lt;-Model-ViewModel&gt;&gt; Get-Model-s();
+        ///        Task&lt;-Model-ViewModel&gt; Get-Model-(int -model-Id);
+        ///        Task&lt;-Model-ViewModel&gt; Add-Model-(-Model-ViewModel -model-ViewModel);
+        ///        Task&lt;-Model-ViewModel&gt; Update-Mod [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string I_Model_Repository {
             get {
                 return ResourceManager.GetString("I-Model-Repository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to using pro_Models.Models;
+        ///using pro_Models.ViewModels;
+        ///using System;
+        ///using System.Collections.Generic;
+        ///using System.Linq;
+        ///using System.Threading.Tasks;
+        ///
+        ///namespace pro_Server.Services
+        ///{
+        ///    public interface I-Model-Service
+        ///    {
+        ///        Task&lt;IEnumerable&lt;-Model-ViewModel&gt;&gt; Get-Model-s();
+        ///        Task&lt;-Model-ViewModel&gt; Get-Model-(int id);
+        ///        Task&lt;-Model-ViewModel&gt; Update-Model-(int id, -Model-ViewModel -model-ViewModel);
+        ///        Task&lt;-Model-ViewModel&gt; Create-Model-(-Model-ViewModel -model-Vie [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string I_Model_Service {
+            get {
+                return ResourceManager.GetString("I-Model-Service", resourceCulture);
             }
         }
     }

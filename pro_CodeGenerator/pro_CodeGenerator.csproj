@@ -89,5 +89,26 @@
   <ItemGroup>
     <None Include="Resources\-Model-Controller.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I-Model-Service.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\-Model-Service.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\-Model-.razor.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\-Model-Details.razor.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\-Model-Edit.razor.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\-Model-Form.razor.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\-Model-New.razor.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

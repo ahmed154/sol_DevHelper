@@ -1,0 +1,128 @@
+using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
+using pro_Models.Models;
+using pro_Models.ViewModels;
+using pro_Server.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+
+namespace pro_Server.Services
+{
+    public class -Model-Service : I-Model-Service
+    {
+        private readonly HttpClient httpClient;
+        private readonly IHttpService httpService;
+        private string url = "api/-model-";
+        private JsonSerializerOptions defaultJsonSerializerOptions =>new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+
+        public -Model-Service(HttpClient httpClient, IHttpService httpService)
+        {
+            this.httpClient = httpClient;
+            this.httpService = httpService;
+        }
+        private async Task<T> Deserialize<T>(HttpResponseMessage httpResponse, JsonSerializerOptions options)
+        {
+            var responseString = await httpResponse.Content.ReadAsStringAsync();
+            return System.Text.Json.JsonSerializer.Deserialize<T>(responseString, options);
+        }
+        async Task<IEnumerable<-Model-ViewModel>> I-Model-Service.Get-Model-s()
+        {
+            List<-Model-ViewModel> -model-ViewModels = new List<-Model-ViewModel>();
+            var response = await httpService.Get<List<-Model-ViewModel>>(url);
+
+            if (!response.Success)
+            {
+                -model-ViewModels.Add(new -Model-ViewModel { Exception = await response.GetBody() });
+            }
+            else
+            {     
+                 -model-ViewModels = response.Response;              
+            }
+            return -model-ViewModels;
+        }
+        public async Task<IEnumerable<-Model->> Get-Model-s()
+        {
+            var responseHTTP = await httpClient.GetAsync(url);
+
+            if (responseHTTP.IsSuccessStatusCode)
+            {
+                var response = await Deserialize<List<-Model->>(responseHTTP, defaultJsonSerializerOptions);
+                return response;
+            }
+            else
+            {
+                throw new ApplicationException(await responseHTTP.Content.ReadAsStringAsync());
+            }
+        }
+
+
+        public async Task<-Model-ViewModel> Create-Model-(-Model-ViewModel -model-ViewModel)
+        {
+            var dataJson = System.Text.Json.JsonSerializer.Serialize(-model-ViewModel);
+            var stringContent = new StringContent(dataJson, Encoding.UTF8, "application/json");
+            var responseHTTP = await httpClient.PostAsync(url, stringContent);
+
+            if (responseHTTP.IsSuccessStatusCode)
+            {
+                -model-ViewModel = await Deserialize<-Model-ViewModel>(responseHTTP, defaultJsonSerializerOptions);
+            }
+            else
+            {
+                -model-ViewModel.Exception = await responseHTTP.Content.ReadAsStringAsync();
+            }
+            return -model-ViewModel;
+        }
+        public async Task<-Model-ViewModel> Update-Model-(int id, -Model-ViewModel -model-ViewModel)
+        {
+            var dataJson = System.Text.Json.JsonSerializer.Serialize(-model-ViewModel);
+            var stringContent = new StringContent(dataJson, Encoding.UTF8, "application/json");
+            var responseHTTP = await httpClient.PutAsync($"{url}/{id}", stringContent);
+
+            if (responseHTTP.IsSuccessStatusCode)
+            {
+                var response = await Deserialize<-Model-ViewModel>(responseHTTP, defaultJsonSerializerOptions);
+                -model-ViewModel = response;
+            }
+            else
+            {
+                -model-ViewModel.Exception = await responseHTTP.Content.ReadAsStringAsync();
+            }
+            return -model-ViewModel;
+        }
+
+        public async Task<-Model-ViewModel> Delete-Model-(int id)
+        {
+            -Model-ViewModel -model-ViewModel = new -Model-ViewModel();
+
+            var response = await httpService.Delete($"{url}/{id}");
+            if (!response.Success)
+            {
+                -model-ViewModel.Exception = await response.GetBody();
+            }
+            return -model-ViewModel;
+        }
+
+
+
+        public async Task<-Model-ViewModel> Get-Model-(int id)
+        {
+            -Model-ViewModel -model-ViewModel = new -Model-ViewModel();
+            var response = await httpService.Get<-Model-ViewModel>($"{url}/{id}");
+
+            if (!response.Success)
+            {
+                -model-ViewModel.Exception = await response.GetBody();
+            }
+            else
+            {
+                -model-ViewModel.-Model- = response.Response.-Model-;
+            }
+            return -model-ViewModel;
+        }
+    }
+}
