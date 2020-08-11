@@ -14,22 +14,30 @@ namespace pro_CodeGenerator
     public partial class frm_Main : Form
     {
         #region Declaration
-        
+        string  I, Type, Extention;
         #endregion
         public frm_Main()
         {
             InitializeComponent();
+
+            GetProjectsDirectories();
+            txt_OldModel.Text = oldModelName();
+
         }
 
         #region Pro
-        void CreateFile(string path, string txt)
-        {         
+        void CreateFile(string path)
+        {
+            string oldFileName = I + txt_OldModel.Text + Type + Extention;
+            string oldFilePath = Path.Combine(Application.StartupPath, "src", oldFileName);
+            string txt = File.ReadAllText(oldFilePath);
+            txt = txt.Replace(txt_OldModel.Text, txt_NewModel.Text);
+            txt = txt.Replace(txt_OldModel.Text.ToLower(), txt_NewModel.Text.ToLower());
+            Directory.CreateDirectory(path);
+            path = Path.Combine(path, oldFileName.Replace(txt_OldModel.Text, txt_NewModel.Text));
+
             if (!File.Exists(path))
             {
-                //File.Create(path);
-                //TextWriter tw = new StreamWriter(path);
-                //tw.WriteLine(txt);
-                //tw.Close();
                 using (var fs = new FileStream(path, FileMode.Create, FileAccess.ReadWrite))
                 {
                     TextWriter tw = new StreamWriter(fs);
@@ -43,133 +51,146 @@ namespace pro_CodeGenerator
             string f = txt.Substring(0, 1).ToUpper();
             return f + txt.Substring(1);
         }
-        void TxtModelCheck()
+        void TxtModelCheck(TextBox txt)
         {
-            if (string.IsNullOrEmpty(txt_ModelName.Text.Trim()))
+            if (string.IsNullOrEmpty(txt.Text.Trim()))
             {
                 MessageBox.Show("", "you have to spcify model name", MessageBoxButtons.OK);
-                txt_ModelName.Focus();
+                txt.Focus();
                 return;
             }
-            txt_ModelName.Text = UpperFirstLetter(txt_ModelName.Text.Trim());
+            txt.Text = UpperFirstLetter(txt.Text.Trim());
+        }
+        void GetProjectsDirectories()
+        {
+            string exePath = Application.StartupPath;
+
+            List<string> subdirectoryEntries = Directory.GetDirectories(exePath).ToList();
+
+            foreach (string subdirectory in subdirectoryEntries)
+            {
+                if (Path.GetFileName(subdirectory).Length < 4 ||  Path.GetFileName(subdirectory).Substring(0, 4) != "pro_") continue;
+
+                com_Api.Items.Add(Path.GetFileName(subdirectory));
+                com_Client.Items.Add(Path.GetFileName(subdirectory));
+                com_Models.Items.Add(Path.GetFileName(subdirectory));
+            }
+            foreach (var item in com_Api.Items)
+            {
+                if(item.ToString().ToLower() == "pro_api")
+                {
+                    com_Api.SelectedItem = item;
+                }
+            }
+            foreach (var item in com_Client.Items)
+            {
+                if (item.ToString().ToLower() == "pro_server" || item.ToString().ToLower() == "pro_client")
+                {
+                    com_Client.SelectedItem = item;
+                }
+            }
+            foreach (var item in com_Models.Items)
+            {
+                if (item.ToString().ToLower() == "pro_models")
+                {
+                    com_Models.SelectedItem = item;
+                }
+            }
+        }
+        string oldModelName()
+        {
+            string modelName = "";
+            string filepath = Path.GetFileName(Path.Combine(Application.StartupPath, "src"));
+            DirectoryInfo d = new DirectoryInfo(filepath);
+
+            foreach (var file in d.GetFiles("*.cs"))
+            {
+                if (file.Name.Substring(0, 1) != "I" && file.Name.Contains("Repository"))
+                {
+                    modelName = file.Name.Replace("Repository.cs", "");
+                    return modelName;
+                }
+            }
+
+            return modelName;
         }
         #endregion
 
-        private void btn_Generate_Click(object sender, EventArgs e)
+        private void btn_ApiGenerateRepos_Click(object sender, EventArgs e)
         {
-            TxtModelCheck();
+            TxtModelCheck(txt_OldModel);
+            TxtModelCheck(txt_NewModel);
 
-            var dir = Directory.CreateDirectory(Path.Combine(Application.StartupPath, "Repositories"));
+            var newFilePath = Directory.CreateDirectory(Path.Combine(Application.StartupPath, com_Api.Text, "Controllers"));
+            I = ""; Type = "Controller"; Extention = ".cs";
+            CreateFile(newFilePath.FullName);
 
-            string fileName = "I" + txt_ModelName.Text.Trim() + "Repository";
-            string fullFileName = Path.Combine(dir.FullName, fileName + ".cs");
-            string txt = Properties.Resources.I_Model_Repository.ToString();
-            txt = txt.Replace("-Model-", txt_ModelName.Text.Trim());
-            txt = txt.Replace("-model-", txt_ModelName.Text.Trim().ToLower()); 
-            CreateFile(fullFileName, txt);
+            newFilePath = Directory.CreateDirectory(Path.Combine(Application.StartupPath, com_Api.Text, "Repositories"));
+            I = "I"; Type = "Repository"; Extention = ".cs";
+            CreateFile(newFilePath.FullName);
 
-            fileName = txt_ModelName.Text.Trim() + "Repository";
-            fullFileName = Path.Combine(dir.FullName, fileName + ".cs");
-            txt = Properties.Resources._Model_Repository.ToString();
-            txt = txt.Replace("-Model-", txt_ModelName.Text.Trim());
-            txt = txt.Replace("-model-", txt_ModelName.Text.Trim().ToLower());
-            CreateFile(fullFileName, txt);
+            I = "";
+            CreateFile(newFilePath.FullName);
 
-            dir = Directory.CreateDirectory(Path.Combine(Application.StartupPath, "Controllers"));
-            fileName = txt_ModelName.Text.Trim() + "Controller";
-            fullFileName = Path.Combine(dir.FullName, fileName + ".cs");
-            txt = Properties.Resources._Model_Controller.ToString();
-            txt = txt.Replace("-Model-", txt_ModelName.Text.Trim());
-            txt = txt.Replace("-model-", txt_ModelName.Text.Trim().ToLower());
-            CreateFile(fullFileName, txt);
-
-            string startupAPITex = "services.AddScoped<I-Model-Repository, -Model-Repository>();";
-            startupAPITex = startupAPITex.Replace("-Model-", txt_ModelName.Text.Trim());
-            txt_StartupAPI.AppendText(startupAPITex);
-            txt_StartupAPI.AppendText(Environment.NewLine);
+            string startupAPITex = $"services.AddScoped<I{txt_NewModel.Text + Type}, {txt_NewModel.Text + Type}>();";
+            txt_ApiStartup.AppendText(startupAPITex);
+            txt_ApiStartup.AppendText(Environment.NewLine);
         }
-        private void btn_CopyStartupAPI_Click(object sender, EventArgs e)
+        private void btn_ClientGenerateSevices_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(txt_StartupAPI.Text);
-        }
-        private void txt_ModelName_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btn_Generate_Click(null, null);
-                txt_ModelName.SelectAll();
-            }
-        }
+            TxtModelCheck(txt_OldModel);
+            TxtModelCheck(txt_NewModel);
 
-        private void btn_ClientGenerate_Click(object sender, EventArgs e)
-        {
-            TxtModelCheck();
+            var newFilePath = Directory.CreateDirectory(Path.Combine(Application.StartupPath, com_Client.Text, "Services"));
+            I = "I"; Type = "Service"; Extention = ".cs";
+            CreateFile(newFilePath.FullName);
 
-            var dir = Directory.CreateDirectory(Path.Combine(Application.StartupPath, "Services"));
+            I = "";
+            CreateFile(newFilePath.FullName);
 
-            string fileName = "I" + txt_ModelName.Text.Trim() + "Service";
-            string fullFileName = Path.Combine(dir.FullName, fileName + ".cs");
-            string txt = Properties.Resources.I_Model_Service.ToString();
-            txt = txt.Replace("-Model-", txt_ModelName.Text.Trim());
-            txt = txt.Replace("-model-", txt_ModelName.Text.Trim().ToLower());
-            CreateFile(fullFileName, txt);
-
-            fileName = txt_ModelName.Text.Trim() + "Service";
-            fullFileName = Path.Combine(dir.FullName, fileName + ".cs");
-            txt = Properties.Resources._Model_Service.ToString();
-            txt = txt.Replace("-Model-", txt_ModelName.Text.Trim());
-            txt = txt.Replace("-model-", txt_ModelName.Text.Trim().ToLower());
-            CreateFile(fullFileName, txt);
-
-            string startupClientText = @"services.AddHttpClient<I-Model-Service, -Model-Service>(client =>
-                                    {
-                                        client.BaseAddress = new Uri(uri);
-                                    }); ";
-            startupClientText = startupClientText.Replace("-Model-", txt_ModelName.Text.Trim());
-            txt_ClientStartup.AppendText(startupClientText);
+            string startupAPITex = $"services.AddScoped<I{txt_NewModel.Text+Type}, {txt_NewModel.Text+Type}>();";
+            txt_ClientStartup.AppendText(startupAPITex);
             txt_ClientStartup.AppendText(Environment.NewLine);
+        }
+        private void btn_ModelsGenerateVM_Click(object sender, EventArgs e)
+        {
+            TxtModelCheck(txt_OldModel);
+            TxtModelCheck(txt_NewModel);
+
+            var newFilePath = Directory.CreateDirectory(Path.Combine(Application.StartupPath, com_Models.Text, "ViewModels"));
+            I = ""; Type = "VM"; Extention = ".cs";
+            CreateFile(newFilePath.FullName);
         }
 
         private void btn_ClientGeneratePages_Click(object sender, EventArgs e)
         {
-            TxtModelCheck();
+            TxtModelCheck(txt_OldModel);
+            TxtModelCheck(txt_NewModel);
 
-            var dir = Directory.CreateDirectory(Path.Combine(Application.StartupPath, $@"Pages\{txt_ModelName.Text.Trim()}"));
+            var newFilePath = Directory.CreateDirectory(Path.Combine(Application.StartupPath, com_Client.Text, "Pages", txt_NewModel.Text));
 
-            string fileName = txt_ModelName.Text.Trim();
-            string fullFileName = Path.Combine(dir.FullName, fileName + ".razor");
-            string txt = Properties.Resources._Model__razor.ToString();
-            txt = txt.Replace("-Model-", txt_ModelName.Text.Trim());
-            txt = txt.Replace("-model-", txt_ModelName.Text.Trim().ToLower());
-            CreateFile(fullFileName, txt);
+            I = ""; Type = "Index"; Extention = ".razor";
+            CreateFile(newFilePath.FullName);
 
-            fileName = txt_ModelName.Text.Trim() + "Form";
-            fullFileName = Path.Combine(dir.FullName, fileName + ".razor");
-            txt = Properties.Resources._Model_Form_razor.ToString();
-            txt = txt.Replace("-Model-", txt_ModelName.Text.Trim());
-            txt = txt.Replace("-model-", txt_ModelName.Text.Trim().ToLower());
-            CreateFile(fullFileName, txt);
+            Type = "Form";
+            CreateFile(newFilePath.FullName);
 
-            fileName = txt_ModelName.Text.Trim() + "New";
-            fullFileName = Path.Combine(dir.FullName, fileName + ".razor");
-            txt = Properties.Resources._Model_New_razor.ToString();
-            txt = txt.Replace("-Model-", txt_ModelName.Text.Trim());
-            txt = txt.Replace("-model-", txt_ModelName.Text.Trim().ToLower());
-            CreateFile(fullFileName, txt);
+            Type = "New";
+            CreateFile(newFilePath.FullName);
 
-            fileName = txt_ModelName.Text.Trim() + "Details";
-            fullFileName = Path.Combine(dir.FullName, fileName + ".razor");
-            txt = Properties.Resources._Model_Details_razor.ToString();
-            txt = txt.Replace("-Model-", txt_ModelName.Text.Trim());
-            txt = txt.Replace("-model-", txt_ModelName.Text.Trim().ToLower());
-            CreateFile(fullFileName, txt);
+            Type = "Details";
+            CreateFile(newFilePath.FullName);
 
-            fileName = txt_ModelName.Text.Trim() + "Edit";
-            fullFileName = Path.Combine(dir.FullName, fileName + ".razor");
-            txt = Properties.Resources._Model_Edit_razor.ToString();
-            txt = txt.Replace("-Model-", txt_ModelName.Text.Trim());
-            txt = txt.Replace("-model-", txt_ModelName.Text.Trim().ToLower());
-            CreateFile(fullFileName, txt);
+            Type = "Edit";
+            CreateFile(newFilePath.FullName);
+        }
+        private void btn_CopyStartupAPI_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(txt_ApiStartup.Text);
+        }
+        private void btn_ClientCopyStartup_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(txt_ClientStartup.Text);
         }
     }
 }
